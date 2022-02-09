@@ -7,6 +7,8 @@ import com.cs4.clothes.service.IUserService;
 import com.cs4.clothes.service.email.EmailVerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -100,4 +102,16 @@ public class UserServiceImpl implements IUserService {
     public int unlockUser(String username) {
         return userRepository.unlockUser(username);
     }
+
+    @Override
+    public Page<Users> findAllUser(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
+    public Users findByID(long id) {
+        return userRepository.findById(id).get();
+    }
+
+
 }

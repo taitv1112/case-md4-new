@@ -1,6 +1,9 @@
 package com.cs4.clothes.repository;
 
+import com.cs4.clothes.model.Product;
 import com.cs4.clothes.model.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +20,7 @@ public interface IUserRepository extends JpaRepository<Users, Long> {
     Boolean existsByEmail(String email);
     Optional<Users> findByEmail(String email);
     List<Users> findAllByEnabledIsFalse();
+
 
 
     @Modifying
