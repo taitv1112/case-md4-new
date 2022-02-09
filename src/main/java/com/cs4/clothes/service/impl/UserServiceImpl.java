@@ -7,6 +7,8 @@ import com.cs4.clothes.service.IUserService;
 import com.cs4.clothes.service.email.EmailVerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +53,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Optional<Users> findById(Long id) {
-        return userRepository.findById(id);
+    public Users findById(Long id) {
+        return userRepository.findById(id).get();
     }
 
     public String signUpUser(Users user){
@@ -60,9 +62,6 @@ public class UserServiceImpl implements IUserService {
         if (emailExisted){
             throw new IllegalStateException("email taken");
         }
-
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
         userRepository.save(user);
 
         String token = UUID.randomUUID().toString();
@@ -99,5 +98,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public int unlockUser(String username) {
         return userRepository.unlockUser(username);
+    }
+
+    @Override
+    public Page<Users> findAllUser(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

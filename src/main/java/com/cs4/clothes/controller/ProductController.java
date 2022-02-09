@@ -29,9 +29,13 @@ public class ProductController {
     ImgServiceImpl imgService;
 
 
+//    @GetMapping
+//    public ResponseEntity<Page<Product>> findAll(@RequestParam(defaultValue = "0") int page){
+//        return new  ResponseEntity<>(productService.findProductPage(PageRequest.of(page , 4)), HttpStatus.OK);
+//    }
     @GetMapping
-    public ResponseEntity<Page<Product>> findAll(@RequestParam(defaultValue = "0") int page){
-        return new  ResponseEntity<>(productService.findProductPage(PageRequest.of(page , 4)), HttpStatus.OK);
+    public ResponseEntity<List<Product>> findAll(){
+        return new  ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("category")
@@ -55,6 +59,10 @@ public class ProductController {
 
     @GetMapping("/delete/{id}")
     public ResponseEntity<Product> findByIdDelete(@PathVariable long id) {
+        return new ResponseEntity<>(productService.findById(id),HttpStatus.OK);
+    }
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<Product> detail(@PathVariable long id) {
         return new ResponseEntity<>(productService.findById(id),HttpStatus.OK);
     }
 

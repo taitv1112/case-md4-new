@@ -1,5 +1,6 @@
 package com.cs4.clothes.security.userpincal;
 
+import com.cs4.clothes.model.Cart;
 import com.cs4.clothes.model.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,20 @@ public class UserPrinciple implements UserDetails {
     private String avatar;
     private boolean enabled = false;
     private boolean locked = false;
+    private Cart cart;
+
+    public UserPrinciple(Long id, String name, String username, String email, String password, String avatar, boolean enabled, boolean locked, Cart cart, Collection<? extends GrantedAuthority> roles) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.avatar = avatar;
+        this.enabled = enabled;
+        this.locked = locked;
+        this.cart = cart;
+        this.roles = roles;
+    }
 
     public UserPrinciple(Long id, String name, String username, String email, String password, String avatar, boolean enabled, boolean locked, Collection<? extends GrantedAuthority> roles) {
         this.id = id;
@@ -43,7 +58,7 @@ public class UserPrinciple implements UserDetails {
     public UserPrinciple() {
     }
 
-    public UserPrinciple(Long id, String name, String username, String email, String password, String avatar, Collection<? extends GrantedAuthority> roles) {
+    public UserPrinciple(Long id, String name, String username, String email, String password, String avatar, Collection<? extends GrantedAuthority> roles, Cart cart) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -51,6 +66,15 @@ public class UserPrinciple implements UserDetails {
         this.password = password;
         this.avatar = avatar;
         this.roles = roles;
+        this.cart = cart;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public static UserPrinciple build(Users users) {
@@ -62,7 +86,8 @@ public class UserPrinciple implements UserDetails {
                 users.getEmail(),
                 users.getPassword(),
                 users.getAvatar(),
-                authorities
+                authorities,
+                users.getCart()
         );
     }
 

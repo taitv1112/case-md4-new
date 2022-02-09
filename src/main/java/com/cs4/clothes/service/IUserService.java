@@ -3,6 +3,8 @@ package com.cs4.clothes.service;
 
 
 import com.cs4.clothes.model.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +15,7 @@ public interface IUserService {
     Boolean existsByEmail(String email);
     Users save(Users users);
     void deleteById(Long id);
-    Optional<Users> findById(Long id);
+    Users findById(Long id);
      String signUpUser(Users user);
         List<Users> findByEnabledIsFalse();
     //
@@ -24,6 +26,8 @@ public interface IUserService {
         int lockUser(String username);
 
         int unlockUser(String username);
+
+    Page<Users> findAllUser(Pageable pageable);
     //
     //    List<User> findAll();
     //

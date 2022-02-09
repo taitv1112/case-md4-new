@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -17,8 +18,8 @@ public class ProductServiceImpl implements IProductService {
     IProductRepository productRepository;
 
     @Override
-    public Set<Product> findAll() {
-        return (Set<Product>) productRepository.findAll();
+    public List<Product> findAll() {
+        return (List<Product>) productRepository.findAll();
     }
 
     @Override

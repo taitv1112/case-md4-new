@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailService).passwordEncoder(NoOpPasswordEncoder.getInstance());
+        authenticationManagerBuilder.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
     @Bean
     PasswordEncoder passwordEncoder(){

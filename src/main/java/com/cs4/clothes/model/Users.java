@@ -53,6 +53,30 @@ public class Users implements Serializable {
     public Users() {
     }
 
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public Set<OrderSP> getOrderSet() {
+        return orderSet;
+    }
+
+    public void setOrderSet(Set<OrderSP> orderSet) {
+        this.orderSet = orderSet;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public Users(Long id, String name, String username, String email, String password, String avatar, Set<Role> roles, boolean enabled, boolean locked) {
         this.id = id;
         this.name = name;
