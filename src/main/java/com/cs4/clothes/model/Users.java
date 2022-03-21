@@ -38,9 +38,8 @@ public class Users implements Serializable {
     @Size(min = 6,max = 100)
     private String password;
     @OneToOne
+    @JoinColumn(name = "cart_id")
     private Cart cart;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
-    private Set<OrderSP> orderSet = new HashSet();
     @Lob
     private String avatar;
 
@@ -61,13 +60,6 @@ public class Users implements Serializable {
         this.cart = cart;
     }
 
-    public Set<OrderSP> getOrderSet() {
-        return orderSet;
-    }
-
-    public void setOrderSet(Set<OrderSP> orderSet) {
-        this.orderSet = orderSet;
-    }
 
     public String getPhone() {
         return phone;

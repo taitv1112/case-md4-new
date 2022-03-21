@@ -1,6 +1,7 @@
 package com.cs4.clothes.config;
 
 
+import com.cs4.clothes.model.RoleName;
 import com.cs4.clothes.security.jwt.JwtEntryPoint;
 import com.cs4.clothes.security.jwt.JwtTokenFilter;
 import com.cs4.clothes.security.userpincal.UserDetailService;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -47,9 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().and().csrf().disable()
-                .authorizeRequests().antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
-                .and().logout()
+                .authorizeRequests()
+               .antMatchers("/**").permitAll()
                 .and().exceptionHandling()
                 .authenticationEntryPoint(jwtEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

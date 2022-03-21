@@ -17,6 +17,8 @@ public class Rate {
     private Long id;
     private int star;
     @ManyToOne
+    Users users;
+    @ManyToOne
     Product product;
     @Override
     public boolean equals(Object o) {

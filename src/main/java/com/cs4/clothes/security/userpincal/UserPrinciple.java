@@ -16,12 +16,65 @@ public class UserPrinciple implements UserDetails {
     private String name;
     private String username;
     private String email;
+
     @JsonIgnore
     private String password;
     private String avatar;
     private boolean enabled = false;
     private boolean locked = false;
     private Cart cart;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public Collection<? extends GrantedAuthority> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<? extends GrantedAuthority> roles) {
+        this.roles = roles;
+    }
 
     public UserPrinciple(Long id, String name, String username, String email, String password, String avatar, boolean enabled, boolean locked, Cart cart, Collection<? extends GrantedAuthority> roles) {
         this.id = id;
@@ -67,6 +120,7 @@ public class UserPrinciple implements UserDetails {
         this.avatar = avatar;
         this.roles = roles;
         this.cart = cart;
+
     }
 
     public Cart getCart() {

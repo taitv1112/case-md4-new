@@ -28,6 +28,11 @@ public class UserServiceImpl implements IUserService {
     private EmailVerificationTokenService emailVerificationTokenService;
 
     @Override
+    public List<Users> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public Optional<Users> findByUsername(String name) {
         return userRepository.findByUsername(name);
     }
@@ -78,6 +83,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<Users> findByEnabledIsFalse() {
         return userRepository.findAllByEnabledIsFalse();
+    }
+
+    @Override
+    public Users findByUserName(String name) {
+        return userRepository.findByUserName(name);
     }
 
     @Override

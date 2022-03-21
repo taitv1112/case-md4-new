@@ -29,18 +29,23 @@ public class ProductController {
     ImgServiceImpl imgService;
 
 
-//    @GetMapping
-//    public ResponseEntity<Page<Product>> findAll(@RequestParam(defaultValue = "0") int page){
-//        return new  ResponseEntity<>(productService.findProductPage(PageRequest.of(page , 4)), HttpStatus.OK);
-//    }
+    @GetMapping("productPage")
+    public ResponseEntity<Page<Product>> findAll(@RequestParam(defaultValue = "0") int page){
+        return new  ResponseEntity<>(productService.findProductPage(PageRequest.of(page , 4)), HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<Product>> findAll(){
         return new  ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
+    @PostMapping("category/{id}")
+    public ResponseEntity<List<Product>> findProductsByCategoryId(@PathVariable long id){
+        return new  ResponseEntity<>(productService.findProductsByCategory_Id(id), HttpStatus.OK);
+    }
 
     @GetMapping("category")
     public ResponseEntity <List<Category>> findAllCate(){
-        return new  ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
+        List<Category> categoryList = categoryService.findAll();
+        return new  ResponseEntity<>(categoryList, HttpStatus.OK);
     }
     @GetMapping("img")
     public ResponseEntity <List<Img>> findAllImg(){
@@ -54,6 +59,8 @@ public class ProductController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<Product> findById(@PathVariable long id) {
+        productService.findById(id).setView( productService.findById(id).getView()+1);
+        productService.save(productService.findById(id));
         return new ResponseEntity<>(productService.findById(id),HttpStatus.OK);
     }
 
@@ -63,6 +70,7 @@ public class ProductController {
     }
     @GetMapping("/detail/{id}")
     public ResponseEntity<Product> detail(@PathVariable long id) {
+         productService.findById(id);
         return new ResponseEntity<>(productService.findById(id),HttpStatus.OK);
     }
 
@@ -79,7 +87,7 @@ public class ProductController {
         return new ResponseEntity<>(product,HttpStatus.OK);
     }
     @GetMapping("/find/{name}")
-    public  ResponseEntity<Set<Product>> findById(@PathVariable String name){
-        return new ResponseEntity<>( productService.findByName(name) , HttpStatus.OK);
+    public  ResponseEntity<List<Product>> findContaining(@PathVariable String name){
+        return new ResponseEntity<>( productService.findAllByName(name) , HttpStatus.OK);
     }
 }

@@ -17,7 +17,8 @@ public interface IUserRepository extends JpaRepository<Users, Long> {
     Boolean existsByEmail(String email);
     Optional<Users> findByEmail(String email);
     List<Users> findAllByEnabledIsFalse();
-
+    @Query(nativeQuery = true, value = "SELECT * FROM users where users.username = ?1")
+    Users findByUserName(String username);
 
     @Modifying
     @Query("UPDATE Users a SET a.enabled = TRUE WHERE a.email = ?1")

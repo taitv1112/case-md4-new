@@ -20,6 +20,17 @@ public class OrderDetail {
     @ManyToOne
     Product product;
 
+    public OrderDetail( double quantity, OrderSP order, Product product) {
+        this.id = id;
+        this.quantity = quantity;
+        this.order = order;
+        this.product = product;
+    }
+
+    public OrderDetail() {
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

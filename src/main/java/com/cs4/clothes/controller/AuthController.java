@@ -1,15 +1,19 @@
 package com.cs4.clothes.controller;
 
+import com.cs4.clothes.dto.request.CartForm;
 import com.cs4.clothes.dto.request.SignInForm;
 import com.cs4.clothes.dto.request.SignUpForm;
 import com.cs4.clothes.dto.response.JwtResponse;
 import com.cs4.clothes.dto.response.ResponseMessage;
-import com.cs4.clothes.model.Role;
-import com.cs4.clothes.model.RoleName;
-import com.cs4.clothes.model.Users;
+import com.cs4.clothes.model.*;
+import com.cs4.clothes.repository.ICategoryRepository;
 import com.cs4.clothes.security.jwt.JwtProvider;
 import com.cs4.clothes.security.userpincal.UserPrinciple;
+import com.cs4.clothes.service.ICartDetailService;
+import com.cs4.clothes.service.ICartService;
+import com.cs4.clothes.service.IProductService;
 import com.cs4.clothes.service.email.RegistrationService;
+import com.cs4.clothes.service.impl.ProductServiceImpl;
 import com.cs4.clothes.service.impl.RoleServiceImpl;
 import com.cs4.clothes.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +28,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @CrossOrigin(origins = "*")
 @RestController
 public class AuthController {
+    @Autowired
+    ICartDetailService cartDetailService;
+    @Autowired
+    ICategoryRepository iCategoryRepository;
+    @Autowired
+    ICartService iCartService;
     @Autowired
     UserServiceImpl userService;
     @Autowired
@@ -41,6 +52,10 @@ public class AuthController {
     JwtProvider jwtProvider;
     @Autowired
     private RegistrationService registrationService;
+    @GetMapping("/login")
+    public String login(){
+        return "redirect:/http://localhost:63342/package.json/Source%20Code%20(1)/public/login.html";
+    }
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm){
         if(userService.existsByUsername(signUpForm.getUsername())){
@@ -71,6 +86,9 @@ public class AuthController {
                     roles.add(userRole);
             }
         });
+        Cart cart = new Cart();
+        iCartService.save(cart);
+        users.setCart(cart);
         users.setRoles(roles);
         registrationService.register(users);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
@@ -93,6 +111,14 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.createToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getName(), userPrinciple.getAvatar(),userPrinciple.getAuthorities(),userPrinciple.getCart()));
+        System.out.println("user name ====" + userPrinciple.getUsername());
+        List<CartDetail> cartDetailList = cartDetailService.findCartDetailsByCart_Id(userPrinciple.getCart().getId());
+        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getName(), userPrinciple.getAvatar(),userPrinciple.getAuthorities(),cartDetailList,userPrinciple.getUsername(),userPrinciple.getCart())); }
+    @GetMapping("/signout")
+    public ResponseEntity<?> logout(@Valid @RequestBody CartForm cartForm){
+        for (int i = 0; i < cartForm.getCartDetailList().size(); i++) {
+            cartDetailService.save(cartForm.getCartDetailList().get(i));
+        }
+        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 }
